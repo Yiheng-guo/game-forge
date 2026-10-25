@@ -8,7 +8,13 @@ export class Store{
     await fs.mkdir(this.directory,{recursive:true,mode:0o700});
     try{const data=JSON.parse(await fs.readFile(this.file,'utf8'));if(data.schema!==1||!Array.isArray(data.projects))throw Error('Unsupported project format');this.data=data;}
     catch(e){if(e.code!=='ENOENT')throw new Error('项目数据无法读取，请先保留 projects.json 再恢复备份。');}
-    for(const seed of [...seeds].reverse())if(!this.data.projects.some(p=>p.templateSlug===seed.slug))this.create({...seed,templateSlug:seed.slug});
+    for(const seed of [...seeds].reverse()){
+      const existing=this.data.projects.find(p=>p.templateSlug===seed.slug);
+      if(!existing)this.create({...seed,templateSlug:seed.slug});
+      else if(existing.versions.every(v=>v.origin==='example')&&existing.activeVersion===existing.versions.at(-1)?.id&&existing.versions.at(-1)?.html!==seed.html){
+        this.commit(existing,{title:seed.title,html:seed.html,summary:seed.description,controls:seed.controls,objective:seed.description,genre:seed.genre,changes:['更新示例内容，保留之前的版本']},{origin:'example'});
+      }
+    }
     await this.save();
   }
   list(){return this.data.projects.map(({versions,messages,...p})=>({...p,versionCount:versions.length,thumbnail:versions.find(v=>v.id===p.activeVersion)?.thumbnail??null}));}

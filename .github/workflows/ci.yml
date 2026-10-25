@@ -19,6 +19,7 @@ jobs:
         run: npm start > /tmp/forge-server.log 2>&1 &
       - run: curl --retry 10 --retry-connrefused --retry-delay 1 --fail http://127.0.0.1:4317/ > /dev/null
       - run: npm run test:browser
+      - run: npm run test:examples
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -50,8 +50,8 @@ try{
   await boundary.locator('iframe').evaluate((f,html)=>f.srcdoc=html,sandboxDocument(testDoc));
   await boundary.frameLocator('iframe').getByText('isolated',{exact:true}).waitFor();await boundary.waitForTimeout(200);assert.equal(external,0);await boundary.close();
   const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1});const mp=await mobile.newPage();mp.on('pageerror',e=>errors.push(e.message));
-  await mp.goto(base);await mp.getByRole('button',{name:'展开项目列表'}).click();await mp.locator('.project-select').filter({hasText:'霓虹边界'}).first().click();
-  await mp.frameLocator('iframe').getByRole('button',{name:'进入星域'}).tap();await mp.frameLocator('iframe').locator('canvas').tap({position:{x:150,y:180}});
+  await mp.goto(base);await mp.bringToFront();await mp.getByRole('button',{name:'展开项目列表'}).click();await mp.locator('.project-select').filter({hasText:'霓虹边界'}).first().click();
+  await mp.locator('.workspace[data-project-id="'+testId+'"] .game-frame[data-ready="true"]').waitFor();await mp.frameLocator('iframe').getByRole('button',{name:'进入星域'}).tap();await mp.frameLocator('iframe').locator('#overlay').waitFor({state:'hidden'});await mp.frameLocator('iframe').locator('canvas').tap({position:{x:150,y:180},timeout:5000});
   assert.equal(await mp.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await mp.screenshot({path:'test-results/workbench-mobile.png',fullPage:true});await mobile.close();
   assert.deepEqual(errors,[]);

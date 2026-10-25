@@ -41,7 +41,7 @@ app.get('/api/projects/:id',(req,res)=>{const p=projectOf(req,res);if(p)res.json
 app.post('/api/projects',async(req,res)=>{
   const title=typeof req.body.title==='string'?req.body.title.slice(0,80):'未命名游戏';
   if(store.data.projects.length>=100)return res.status(400).json({error:'最多保留 100 个项目，请先导出并清理旧项目'});
-  const seed=seeds.find(s=>s.slug===req.body.template),p=store.create(seed?{...seed,origin:'example'}:{title});await store.save();res.status(201).json(p);
+  const seed=seeds.find(s=>s.slug===req.body.template),p=store.create(seed?{...seed,html:await fs.readFile(path.join(root,'public/examples',seed.file),'utf8'),origin:'example'}:{title});await store.save();res.status(201).json(p);
 });
 app.patch('/api/projects/:id',async(req,res)=>{
   const p=projectOf(req,res);if(!p)return;

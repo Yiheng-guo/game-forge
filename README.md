@@ -4,6 +4,8 @@
 
 **[打开本机创作工作台](http://127.0.0.1:4317)** · **[公开示例与分享播放器](https://yiheng-guo.github.io/game-forge/)**
 
+![造游游戏创作工作台](docs/images/workbench.png)
+
 ## 能做什么
 
 - **真实对话生成**：通过本机已登录的 Codex 生成完整 HTML / Canvas 游戏；修改时携带所选版本，而非重新选择固定模板。
@@ -70,6 +72,7 @@ npx playwright install chromium
 npm test
 # 先启动 npm start，再在另一个终端执行：
 npm run test:browser
+npm run test:examples
 ```
 
 自动运行检查仅覆盖初始加载，不等于完整通关、无缺陷或真人觉得好玩。浏览器测试覆盖项目操作、代码保存、版本恢复、分享、隔离和窄屏操作；真实模型调用单独执行，不在 CI 中消耗账户额度。
