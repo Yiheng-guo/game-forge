@@ -54,6 +54,10 @@ try{
   await mp.locator('.workspace[data-project-id="'+testId+'"] .game-frame[data-ready="true"]').waitFor();await mp.frameLocator('iframe').getByRole('button',{name:'进入星域'}).tap();await mp.frameLocator('iframe').locator('#overlay').waitFor({state:'hidden'});await mp.frameLocator('iframe').locator('canvas').tap({position:{x:150,y:180},timeout:5000});
   assert.equal(await mp.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await mp.screenshot({path:'test-results/workbench-mobile.png',fullPage:true});await mobile.close();
+  await page.bringToFront();await page.locator('.project-select').filter({hasText:'潮汐小馆'}).first().click();await page.frameLocator('iframe').getByRole('button',{name:'开门营业'}).click();await page.frameLocator('iframe').locator('#brew').click();await page.waitForTimeout(3800);
+  assert.equal(await page.locator('.runtime-errors').count(),0,'a generated game must start after the preview viewport has a real size');
+  const painted=await page.frameLocator('iframe').locator('canvas').evaluate(c=>{const ctx=c.getContext('2d'),colors=new Set();for(let y=0;y<c.height;y+=16)for(let x=0;x<c.width;x+=16){const d=ctx.getImageData(x,y,1,1).data;colors.add([...d].join(','));}return colors.size;});assert.ok(painted>20,'generated scene must render rather than leaving a blank canvas');
+  await page.screenshot({path:'test-results/workbench-cafe.png',fullPage:true});
   assert.deepEqual(errors,[]);
   console.log('Workbench browser checks passed: project creation, live play, editing, version preservation/restore, sharing, download, reload, invalid code, origin/token guards, iframe isolation and touch. No model calls were made by this test.');
 }finally{

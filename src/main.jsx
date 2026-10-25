@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef,useMemo} from 'react';
+import React,{useState,useEffect,useLayoutEffect,useRef,useMemo} from 'react';
 import {createRoot} from 'react-dom/client';
 import {Flame,Plus,Search,ChevronDown,ChevronRight,ArrowUp,ArrowUpRight,Play,Code2,History,Monitor,Smartphone,RotateCcw,Expand,Download,Share2,Check,CheckCircle2,AlertCircle,Loader2,X,Square,Settings2,Gamepad2,Sparkles,MessageSquare,Trash2,Pencil,Copy,FileCode2,ChevronLeft,Folder,Terminal,ExternalLink,ShieldCheck,Keyboard} from 'lucide-react';
 import {connect,api,examples} from './api.js';
@@ -13,9 +13,11 @@ const messageText=m=>m.role==='system'&&/config\.toml|model_providers|reserved b
 const clock=date=>new Intl.DateTimeFormat('zh-CN',{hour:'2-digit',minute:'2-digit'}).format(new Date(date));
 function GameFrame({version,restart=0,mobile=false,onRuntime,frameRef}){
   const [ready,setReady]=useState(false);
+  const [mounted,setMounted]=useState(false),wrap=useRef();
+  useLayoutEffect(()=>{let raf;const observe=()=>{const rect=wrap.current?.getBoundingClientRect();if(rect?.width>100&&rect?.height>100)raf=requestAnimationFrame(()=>setMounted(true));};const observer=new ResizeObserver(observe);observer.observe(wrap.current);observe();return()=>{observer.disconnect();cancelAnimationFrame(raf);};},[]);
   const html=useMemo(()=>version?.html?sandboxDocument(version.html):'', [version?.html]);
   useEffect(()=>{const listener=e=>{if(e.source===frameRef.current?.contentWindow&&e.data?.source==='game-forge'){if(e.data.type==='runtime-error'&&typeof e.data.data==='string')onRuntime?.(e.data.data);}};window.addEventListener('message',listener);return()=>window.removeEventListener('message',listener);},[onRuntime,frameRef]);
-  return <div className={cls('frame-wrap',mobile&&'mobile-shell')}><iframe key={version.id+'-'+restart} ref={frameRef} className={cls('game-frame',mobile&&'mobile-frame')} data-ready={ready} data-version-id={version.id} onLoad={()=>setReady(true)} title={version.title+' 游戏试玩'} sandbox="allow-scripts" allow="autoplay" srcDoc={html}/>{!ready&&<div className="frame-loading" role="status"><Loader2 className="spin" size={20}/><span>正在载入游戏</span></div>}</div>;
+  return <div ref={wrap} className={cls('frame-wrap',mobile&&'mobile-shell')}>{mounted&&<iframe key={version.id+'-'+restart} ref={frameRef} className={cls('game-frame',mobile&&'mobile-frame')} data-ready={ready} data-version-id={version.id} onLoad={()=>setReady(true)} title={version.title+' 游戏试玩'} sandbox="allow-scripts" allow="autoplay" srcDoc={html}/>}<div hidden={ready} className="frame-loading" role="status"><Loader2 className="spin" size={20}/><span>正在载入游戏</span></div></div>;
 }
 function SharedPlayer(){
   const [game,error]=useMemo(()=>{try{return [decodeGame(location.hash.slice(6)),null];}catch(e){return [null,e.message];}},[]);
