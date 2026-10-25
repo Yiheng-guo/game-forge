@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a111a">
+  <meta name="description" content="旋转航线，点亮中继站，把能源送回星港。六段航程，一场安静的太空解谜。">
+  <title>星港调度 · Orbit Dispatch</title>
+
+  <style>:root{color-scheme:dark;--bg:#0a111a;--panel:#101c29;--line:#273747;--text:#e9edf1;--muted:#8f9eae;--gold:#edc480;--cyan:#8de3db;--blue:#8cb9f0;font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);min-height:100vh}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer}button:disabled{opacity:.35;cursor:default}button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:4px}a{color:inherit;text-decoration:none}button{color:inherit}button:not(:disabled){transition:background .18s,transform .18s,border-color .18s}button:not(:disabled):active{transform:translateY(1px)}.sky{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 14% 50%,#16303a55,transparent 48%),radial-gradient(ellipse at 90% 10%,#29415c44,transparent 45%),radial-gradient(circle at 23% 20%,#ffffff55 1px,transparent 1.8px),radial-gradient(circle at 73% 68%,#ffffff44 1px,transparent 1.6px);background-size:auto,auto,173px 211px,233px 181px}.topbar{max-width:1320px;margin:auto;padding:32px 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #26323c80}.brand{display:flex;gap:14px;align-items:center;font-size:18px;letter-spacing:2px;font-weight:600}.brand small{display:block;font-size:9px;letter-spacing:3px;color:var(--muted);margin-top:6px}.brand-mark{font-size:36px;color:var(--gold);font-weight:400}.topbar nav{display:flex;gap:22px}.quiet{border:0;background:none;padding:10px 6px;font-size:12px;color:var(--muted)}.quiet:hover{color:var(--text)}main{max-width:1240px;margin:58px auto 42px;padding:0 36px;display:grid;grid-template-columns:1fr 572px;gap:68px;align-items:center}.eyebrow{font-family:ui-monospace,SFMono-Regular,monospace;letter-spacing:2px;font-size:10px;color:var(--muted);line-height:1.7;margin:0 0 20px}.live-dot{display:inline-block;width:6px;height:6px;background:var(--cyan);border-radius:50%;margin-right:7px;box-shadow:0 0 10px #8de3db80}.intro h1{font-family:"Songti SC","Noto Serif SC",serif;font-size:clamp(34px,3.6vw,48px);font-weight:500;line-height:1.55;letter-spacing:2px;margin:24px 0}.intro h1 em{font-style:normal;color:var(--gold)}.lede{color:#a9b6c1;font-size:14px;line-height:2.2;letter-spacing:1px}.intro-bottom{display:flex;gap:18px;align-items:center;margin:38px 0 42px}.orbit-icon{font-size:42px;color:#667e88;line-height:1}.intro-bottom p{font-size:12px;line-height:1.9;margin:0;color:#cad3dc}.intro-bottom p span{color:var(--muted)}.mission-list{border-top:1px solid var(--line);padding-top:23px;max-width:360px}.mission-list>.eyebrow{display:flex;justify-content:space-between;margin-bottom:15px}.levels{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}.level-button{position:relative;border:1px solid #2a3a46;border-radius:9px;background:#101c2680;height:48px;font-family:ui-monospace,monospace;color:#8494a1;font-size:14px}.level-button:hover{border-color:var(--gold)}.level-button.active{background:#edc48014;border-color:#edc48080;color:var(--gold)}.level-button.done::after{content:'✦';position:absolute;font-size:8px;bottom:3px;right:5px;color:var(--gold)}.console{position:relative;background:linear-gradient(150deg,#152330ed,#0e1925f5);border:1px solid #344352;border-radius:20px;padding:27px;box-shadow:0 32px 100px #0004,inset 0 1px 0 #ffffff0c}.console-head{display:flex;justify-content:space-between;align-items:center}.console-head .eyebrow{font-size:9px;letter-spacing:2px;margin-bottom:6px}.console-head h2{font-size:19px;letter-spacing:2px;font-weight:500;margin:0}.status-pill{font-size:10px;border:1px solid #3c4b57;border-radius:20px;color:#aab9c6;padding:6px 12px}.status-pill.online{color:var(--cyan);border-color:#8de3db55}.metrics{display:grid;grid-template-columns:1.1fr 1fr 1fr;padding:21px 0 16px;border-bottom:1px solid var(--line);margin-bottom:13px}.metrics>div{padding-left:23px;border-left:1px solid var(--line)}.metrics>div:first-child{padding-left:0;border:0}.metrics span{display:block;font-size:10px;color:var(--muted);letter-spacing:1px}.metrics strong{font-size:22px;display:block;margin-top:8px;font-family:ui-monospace,monospace;font-weight:400}.metrics>div:first-child strong{color:var(--gold)}.board-frame{position:relative}.board-coordinates{display:grid;grid-template-columns:repeat(5,1fr);text-align:center;color:#69818e;font:9px ui-monospace,monospace;margin:0 0 9px;letter-spacing:2px}.board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:9px;background:#060e17b3;border:1px solid #283b4c;border-radius:12px;isolation:isolate}.cell{position:relative;aspect-ratio:1;border:1px solid #30404d;border-radius:8px;background:linear-gradient(135deg,#1c2b37,#14212c);padding:0;min-width:0;overflow:visible;touch-action:manipulation;color:#647789}.cell:not(:disabled):hover{background:#26394a;border-color:#708895}.cell svg{width:100%;height:100%;display:block;overflow:visible}.cell .rail{stroke:#08121c;stroke-width:18;fill:none;stroke-linecap:butt}.cell .signal{stroke:currentColor;stroke-width:7;fill:none;stroke-linecap:butt;transition:stroke .24s}.cell .dot{fill:#91a5b0;stroke:#14212c;stroke-width:3}.cell.lit{color:var(--cyan);border-color:#8de3db55;background:linear-gradient(135deg,#153237,#14242e)}.cell.lit .signal{filter:drop-shadow(0 0 5px #8de3db60)}.cell.lit .dot{fill:var(--cyan)}.cell.source{color:var(--gold);border-color:#edc48099;background:#302b25}.cell.target{color:var(--blue);border-color:#8cb9f099;background:#1b2b40}.cell.fixed{cursor:default}.cell .badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:18px;line-height:1;border-radius:5px;background:#15232d;padding:1px 3px;color:#b4a0d6}.cell.lit .badge{color:var(--cyan)}.cell.source .badge{color:var(--gold);background:#302b25}.cell.target .badge{color:var(--blue);background:#1b2b40}.cell.hinted{outline:2px solid var(--gold);outline-offset:2px;box-shadow:0 0 20px #edc48030}.legend{display:flex;align-items:center;gap:16px;font-size:9px;color:#97a8b8;margin:16px 0 13px}.legend>span{display:flex;align-items:center;gap:5px}.legend i{width:6px;height:6px;display:inline-block;border:1px solid}.legend-source{color:var(--gold);background:var(--gold);border-radius:50%}.legend-relay{color:#b4a0d6;transform:rotate(45deg)}.legend-target{color:var(--blue);border-radius:2px}.legend-hint{margin-left:auto;color:#718795}.message{font-size:11px;line-height:1.9;min-height:42px;color:#aabcc8;margin:12px 0}.toolbar{display:flex;gap:8px;align-items:center;padding-top:15px;border-top:1px solid var(--line)}.secondary{border:1px solid #344757;border-radius:7px;background:#192a37;padding:11px 15px;font-size:11px;white-space:nowrap}.secondary:hover{background:#263b4a;border-color:#708895}.share{margin-left:auto;white-space:nowrap}.primary{background:var(--gold);border:1px solid #f8d8a1;color:#22262b;border-radius:7px;font-weight:600;font-size:13px;padding:14px 22px;display:flex;align-items:center;justify-content:center;gap:30px;min-height:46px}.primary:hover{background:#f4d7a6}.welcome,.result{position:absolute;inset:25px 0 0;z-index:2;border-radius:12px;background:#0c1722ed;backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;border:1px solid #34475c}.welcome .eyebrow{margin:12px 0 4px;color:var(--gold);font-size:9px}.welcome-symbol{color:var(--gold);font-size:45px;line-height:1}.welcome h3,.result h3{font-family:"Songti SC",serif;font-size:23px;font-weight:500;letter-spacing:1px;margin:14px 0 8px}.welcome p:not(.eyebrow),.result p:not(.eyebrow){font-size:12px;color:#a8b7c6;line-height:2;margin:7px 0 23px}.welcome small{color:#6e8595;font-size:9px;margin-top:17px;letter-spacing:1px}.welcome .primary{min-width:230px}.result .eyebrow{color:var(--cyan);margin:0 0 8px}.result-stars{font-size:34px;color:var(--gold);letter-spacing:9px;margin-top:4px}.result .quiet{margin-top:12px}.result .primary{min-width:230px}footer{border-top:1px solid #26323c80;max-width:1224px;margin:0 auto;padding:20px 12px 26px;display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:1px;color:#728797}footer>div{display:flex;align-items:center;gap:20px}.footer-dot{padding:0 10px}footer .quiet{font-size:10px;letter-spacing:1px}dialog{position:fixed;border:1px solid #3e5161;border-radius:16px;background:#112130;color:var(--text);max-width:490px;width:calc(100% - 32px);padding:34px;box-shadow:0 30px 100px #0008}dialog::backdrop{background:#040a11bb;backdrop-filter:blur(6px)}dialog h2{font-family:"Songti SC",serif;font-size:25px;font-weight:500;color:var(--gold);margin:10px 0 22px}dialog p{font-size:12px;line-height:2;color:#b3c2cc}dialog .primary{width:100%;margin-top:22px}dialog .close{position:absolute;right:15px;top:10px;background:none;border:0;font-size:25px;color:var(--muted);width:36px;height:36px}dialog .eyebrow{font-size:9px;margin:0}.feedback-options{display:flex;flex-wrap:wrap;gap:7px}.feedback-options button{flex:1}.privacy{font-size:10px;color:#7c92a2}#clear{margin-top:12px}#feedback-status{min-height:24px;color:var(--cyan)}[hidden]{display:none!important}
+@media(min-width:1450px){main{margin-top:80px;margin-bottom:70px}.intro h1{font-size:50px}}
+@media(max-width:1050px){main{gap:30px;grid-template-columns:1fr 500px;padding:0 28px}.topbar{padding:24px 30px}.intro h1{font-size:34px}.console{padding:23px}footer{margin:0 28px}.legend{gap:10px}}
+@media(max-width:820px){main{grid-template-columns:1fr;max-width:600px;gap:28px;margin:30px auto;padding:0 20px}.intro>.eyebrow{font-size:8px;letter-spacing:1.5px}.intro h1{font-size:32px;line-height:1.5;margin:14px 0}.intro h1 br{display:block}.lede{font-size:12px;line-height:1.9}.lede br{display:none}.intro-bottom{display:none}.mission-list{max-width:none;margin-top:22px;padding-top:18px}.mission-list .eyebrow{font-size:9px;margin-bottom:10px}.level-button{height:44px}.console{padding:22px}.topbar{padding:20px;gap:12px}.topbar nav{gap:12px}.brand{font-size:15px;gap:9px}.brand small{font-size:7px;letter-spacing:2px}.brand-mark{font-size:28px}.quiet{font-size:10px}.metrics{padding-top:18px}footer{margin:0 20px;padding:15px 0;flex-direction:column;gap:8px;align-items:flex-start}.console-head h2{font-size:17px}.legend{gap:12px}.cell .badge{font-size:16px}.console-head .eyebrow{font-size:8px}.status-pill{font-size:9px}}
+@media(max-width:420px){main{padding:0 14px}.intro h1{font-size:29px;letter-spacing:1px}.console{padding:15px;border-radius:15px}.board{gap:6px;padding:7px}.cell{border-radius:6px}.board-coordinates{font-size:8px}.metrics strong{font-size:20px}.metrics>div{padding-left:17px}.metrics span{font-size:9px}.legend{font-size:8px;gap:10px}.legend-hint{display:none!important}.toolbar{gap:6px}.toolbar .secondary{padding:11px 10px}.share{font-size:9px;padding:10px 0}.welcome,.result{padding:16px}.welcome-symbol{font-size:32px}.welcome h3,.result h3{font-size:19px}.welcome p:not(.eyebrow),.result p:not(.eyebrow){font-size:10px;margin-bottom:14px}.welcome small{margin-top:12px;font-size:8px}.welcome .primary,.result .primary{min-width:200px;padding:12px 16px;font-size:12px}.result-stars{font-size:28px}.result .eyebrow{font-size:8px}.result .quiet{margin-top:8px}.message{font-size:10px}.cell .badge{font-size:13px}.topbar nav{gap:8px}dialog{padding:25px}.brand{letter-spacing:1px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+<header class="topbar">
+  <a href="./" class="brand"><span class="brand-mark">✦</span><span>星港调度<small>ORBIT DISPATCH</small></span></a>
+  <nav aria-label="辅助功能"><button id="sound" class="quiet">声音：关</button><button id="help" class="quiet">飞行手册 <span>↗</span></button></nav>
+</header>
+<main>
+  <section class="intro">
+    <p class="eyebrow"><span class="live-dot"></span> DEEP SPACE NETWORK / 深空航线计划</p>
+    <h1>让失联的星港，<br><em>再次亮起来。</em></h1>
+    <p class="lede">旋转航线，点亮中继站。<br>在有限的调度次数里，为远方送去一束光。</p>
+    <div class="intro-bottom"><span class="orbit-icon" aria-hidden="true">◎</span><p>没有倒计时。<br><span>留一点时间，给你的下一步。</span></p></div>
+    <div class="mission-list"><p class="eyebrow">航程记录 <span id="total-stars">0 / 18 ✦</span></p><div id="levels" class="levels" aria-label="选择关卡"></div></div>
+  </section>
+  <section class="console" aria-label="航线调度台">
+    <div class="console-head"><div><p class="eyebrow" id="sector">SECTOR 01 / 06</p><h2 id="level-title">初次通联</h2></div><span class="status-pill" id="phase">等待接入</span></div>
+    <div class="metrics"><div><span>剩余调度</span><strong id="remaining">—</strong></div><div><span>中继站</span><strong id="relay-count">0 / 1</strong></div><div><span>三星参考</span><strong id="par">—</strong></div></div>
+    <div class="board-frame">
+      <div class="board-coordinates" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span></div>
+      <div id="board" class="board" aria-label="5 行 5 列航线网格"></div>
+      <div id="welcome" class="welcome"><div class="welcome-symbol" aria-hidden="true">✧</div><p class="eyebrow">一束光的旅程</p><h3>你准备好接管航线了吗？</h3><p>点击线路，顺时针旋转。<br>连接左侧能源与右侧星港，点亮所有中继站。</p><button id="start" class="primary">开始第一段航程 <span>→</span></button><small>鼠标 · 触屏 · 键盘均可操作</small></div>
+      <div id="result" class="result" hidden><p class="eyebrow" id="result-label"></p><div class="result-stars" id="result-stars"></div><h3 id="result-title"></h3><p id="result-copy"></p><button id="next" class="primary"></button><button id="result-retry" class="quiet">重新挑战本关 ↻</button></div>
+    </div>
+    <div class="legend"><span><i class="legend-source"></i>能源</span><span><i class="legend-relay"></i>中继站</span><span><i class="legend-target"></i>星港</span><span class="legend-hint">每次点击旋转 90° ↻</span></div>
+    <p id="message" class="message" role="status" aria-live="polite">准备好后，开始你的第一段航程。</p>
+    <div class="toolbar"><button id="undo" class="secondary" disabled>↶ 撤销</button><button id="hint" class="secondary" disabled>✧ 提示</button><button id="restart" class="secondary" disabled>↻ 重试</button><button id="share" class="quiet share">分享航程 ↗</button></div>
+  </section>
+</main>
+<footer><span>一条航线，一次重新连接。<span class="footer-dot"> · </span>6 段手作关卡</span><div><button id="feedback" class="quiet">试玩反馈</button><a href="https://github.com/Yiheng-guo/orbit-dispatch" target="_blank" rel="noreferrer">GitHub ↗</a></div></footer>
+<dialog id="help-dialog"><button class="close" data-close aria-label="关闭飞行手册">×</button><p class="eyebrow">FLIGHT MANUAL</p><h2>把光送到远方。</h2><p>线路两端相接，能源就能流过。点击一格，让它顺时针旋转 90°；金色能源与蓝色星港固定不动。</p><p>带菱形标记的是中继站。<strong>星港和所有中继站同时接通</strong>才算完成，不需要点亮整个棋盘。</p><p>每次旋转消耗一次调度。次数用尽仍未接通即失败；可以撤销或重试。提示会点亮一个值得调整的格子，不代替你操作。使用提示后，本次最多获得一星。</p><p>键盘：方向键选择格子，Enter / 空格旋转；U 撤销，H 提示，R 重试。固定端点可选中但不能旋转。三星参考是预设航线的步数，发现更短路线同样算三星。</p><p>进度保存在当前浏览器。声音默认关闭；减少动态效果会遵循系统设置。</p><button class="primary" data-close>明白了，返回航线 →</button></dialog>
+<dialog id="feedback-dialog"><button class="close" data-close aria-label="关闭试玩反馈">×</button><p class="eyebrow">MISSION DEBRIEF</p><h2>这一段航程，感觉如何？</h2><p>记录只保存在你的浏览器中，不会自动上传。可以导出后交给开发者，帮助改善玩法。</p><div class="feedback-options"><button class="secondary" data-feeling="clear">规则很清楚</button><button class="secondary" data-feeling="confusing">有点没看懂</button><button class="secondary" data-feeling="again">还想再来一关</button></div><p id="feedback-status" role="status"></p><button id="export" class="primary">导出试玩记录 ↓</button><button id="clear" class="quiet">清除本机进度与记录</button><p class="privacy">记录包含关卡、操作类型、次数、时间与所选反馈，不包含姓名和联系方式。最多保留最近 200 条。</p></dialog>
+<script>(()=>{const DIRECTIONS = [[0,-1,1,4],[1,0,2,8],[0,1,4,1],[-1,0,8,2]];
+const rotateMask = (mask, turns = 1) => {
+  let m = mask;
+  for (let i = 0; i < ((turns % 4) + 4) % 4; i++) m = ((m << 1) & 15) | (m >> 3);
+  return m;
+};
+const routes = [
+  [[0,2],[1,2],[2,2],[3,2],[4,2]],
+  [[0,2],[1,2],[1,1],[2,1],[3,1],[3,2],[4,2]],
+  [[0,2],[0,1],[1,1],[1,2],[2,2],[2,3],[3,3],[4,3],[4,2]],
+  [[0,2],[0,3],[1,3],[1,2],[1,1],[2,1],[2,2],[3,2],[3,3],[4,3],[4,2]],
+  [[0,2],[0,1],[0,0],[1,0],[1,1],[2,1],[2,2],[2,3],[3,3],[3,4],[4,4],[4,3],[4,2]],
+  [[0,2],[1,2],[1,3],[0,3],[0,4],[1,4],[2,4],[2,3],[2,2],[2,1],[3,1],[3,0],[4,0],[4,1],[4,2]],
+];
+const levelNames = ['初次通联','绕行星云','折返信号','环带穿行','远岸灯塔','最后的航线'];
+const tips = [
+  '点击暗色线路旋转 90°，把左侧能源接到右侧星港。',
+  '线路会转弯。先观察出口方向，再规划你的连接。',
+  '点亮每一座中继站，星港才会接受能源。',
+  '有些线路只是岔路，不必让所有格子都亮起。',
+  '先找中继站，再把两端的航线连在一起。',
+  '绕过废弃航道，让所有中继站在同一张能源网里。',
+];
+function bitBetween(a, b) {
+  const d = DIRECTIONS.find(([dx,dy]) => a[0]+dx===b[0] && a[1]+dy===b[1]);
+  if (!d) throw new Error('Non-adjacent route cells');
+  return d[2];
+}
+function clockwiseDistance(from, to) {
+  for (let n=0;n<4;n++) if (rotateMask(from,n)===to) return n;
+  return Infinity;
+}
+function createLevel(index) {
+  if (!Number.isInteger(index) || index<0 || index>=routes.length) throw new RangeError('Unknown level');
+  const route=routes[index];
+  const cells=Array.from({length:25},(_,id)=>({id, mask: [3,5,6,10,9][(id*7+index*3)%5], fixed:false, relay:false, solution:null}));
+  route.forEach((pos,k)=>{
+    const id=pos[1]*5+pos[0];
+    const solution=(k===0?8:bitBetween(pos,route[k-1])) | (k===route.length-1?2:bitBetween(pos,route[k+1]));
+    const fixed=k===0 || k===route.length-1;
+    const turns=fixed?0:(k+index)%3+1;
+    cells[id]={id,mask:rotateMask(solution,turns),fixed,relay:!fixed && (k===Math.floor(route.length/2) || (index>=2 && k===2) || (index>=4 && k===route.length-3)),solution};
+  });
+  const par=cells.reduce((n,c)=>n+(c.solution===null || c.fixed?0:clockwiseDistance(c.mask,c.solution)),0);
+  return {id:index+1,index,name:levelNames[index],tip:tips[index],width:5,height:5,cells,source:10,target:14,par,budget:par+6+index};
+}
+const LEVEL_COUNT=routes.length;
+
+function connected(level, cells) {
+  const visited=new Set([level.source]), queue=[level.source];
+  for(let q=0;q<queue.length;q++) {
+    const id=queue[q], x=id%level.width, y=Math.floor(id/level.width);
+    for(const [dx,dy,bit,opposite] of DIRECTIONS) {
+      const nx=x+dx, ny=y+dy;
+      if(nx<0||nx>=level.width||ny<0||ny>=level.height) continue;
+      const next=ny*level.width+nx;
+      if((cells[id].mask&bit) && (cells[next].mask&opposite) && !visited.has(next)) {
+        visited.add(next);queue.push(next);
+      }
+    }
+  }
+  return visited;
+}
+function outcome(level,cells,moves) {
+  const lit=connected(level,cells);
+  if(lit.has(level.target) && cells.every(c=>!c.relay || lit.has(c.id))) return 'won';
+  return moves>=level.budget?'lost':'playing';
+}
+function initialState(level) {
+  return {level,cells:level.cells.map(c=>({...c})),moves:0,status:'playing',history:[],hints:0};
+}
+function turn(state,id) {
+  if(state.status!=='playing' || !Number.isInteger(id) || !state.cells[id] || state.cells[id].fixed) return state;
+  const cells=state.cells.map(c=>({...c}));cells[id].mask=rotateMask(cells[id].mask);
+  const moves=state.moves+1;
+  return {...state,cells,moves,status:outcome(state.level,cells,moves),history:[...state.history,{cells:state.cells,moves:state.moves}]};
+}
+function undo(state) {
+  if(!state.history.length || state.status==='won') return state;
+  const prior=state.history.at(-1);
+  return {...state,...prior,history:state.history.slice(0,-1),status:'playing'};
+}
+function hint(state) {
+  if(state.status!=='playing') return null;
+  // The known solution is recoverable from every rotation, even after a detour.
+  return state.cells.find(c=>!c.fixed && c.solution!==null && clockwiseDistance(c.mask,c.solution)>0)?.id ?? null;
+}
+function stars(state) {
+  if(state.status!=='won') return 0;
+  if(state.hints>0) return 1;
+  return state.moves<=state.level.par?3:state.moves<=state.level.par+3?2:1;
+}
+
+const KEY='orbit-dispatch-v1';
+function emptyRecord(){return {version:1,best:{},events:[],muted:true};}
+function parseRecord(raw) {
+  try {
+    const v=JSON.parse(raw);
+    if(v?.version!==1) return emptyRecord();
+    const clean=emptyRecord();clean.muted=v.muted!==false;
+    for(const [key,value] of Object.entries(v.best??{})) {
+      if(/^[1-6]$/.test(key) && Number.isInteger(value?.moves) && value.moves>=0 && value.moves<=100 && Number.isInteger(value.stars) && value.stars>=1 && value.stars<=3) clean.best[key]={moves:value.moves,stars:value.stars};
+    }
+    clean.events=Array.isArray(v.events)?v.events.slice(-200).filter(e=>e && ['start','rotate','undo','hint','win','loss','feedback'].includes(e.type) && typeof e.at==='string' && Number.isInteger(e.level) && e.level>=1 && e.level<=6).map(e=>({type:e.type,at:e.at,level:e.level,moves:Number.isInteger(e.moves)?Math.max(0,Math.min(e.moves,100)):0,...(['clear','confusing','again'].includes(e.feedback)?{feedback:e.feedback}:{})})):[];
+    return clean;
+  } catch { return emptyRecord(); }
+}
+function loadRecord(storage) {
+  try {return {data:parseRecord(storage.getItem(KEY)),persistent:true};}
+  catch {return {data:emptyRecord(),persistent:false};}
+}
+function saveRecord(storage,data) {
+  try {storage.setItem(KEY,JSON.stringify(data));return true;} catch {return false;}
+}
+
+const $=id=>document.getElementById(id);
+let storage;
+try{storage=window.localStorage;}catch{storage=null;}
+let {data:record,persistent}=loadRecord(storage);
+const requested=Number(new URLSearchParams(location.search).get('level'));
+let index=Number.isInteger(requested)&&requested>=1&&requested<=LEVEL_COUNT?requested-1:0;
+let state=initialState(createLevel(index)),started=false,hinted=null,audio=null;
+const names=['北','东','南','西'];
+function log(type,extra={}){
+  record.events.push({type,level:state.level.id,moves:state.moves,at:new Date().toISOString(),...extra});
+  record.events=record.events.slice(-200);persist();
+}
+function persist(){persistent=saveRecord(storage,record);}
+function playTone(win=false){
+  if(record.muted)return;
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC)return;
+    audio??=new AC();audio.resume().catch(()=>{});
+    const notes=win?[440,554.37,659.25]:[240+state.moves*12];
+    notes.forEach((f,i)=>{const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime+i*.12;o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.035,t);g.gain.exponentialRampToValueAtTime(.001,t+.23);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.25);});
+  }catch{/* Audio is optional; the visual feedback remains authoritative. */}
+}
+function selectLevel(next){
+  index=next;state=initialState(createLevel(index));started=true;hinted=null;
+  const url=new URL(location.href);url.searchParams.set('level',String(index+1));try{history.replaceState(null,'',url);}catch{}
+  log('start');render();$('board').querySelector('[data-cell="11"]')?.focus({preventScroll:true});
+}
+function paths(mask){
+  return [[1,'M50 50V0'],[2,'M50 50H100'],[4,'M50 50V100'],[8,'M50 50H0']].filter(([bit])=>mask&bit).map(([,path])=>path).join(' ');
+}
+function render(){
+  const lit=connected(state.level,state.cells),relays=state.cells.filter(c=>c.relay),won=state.status==='won';
+  $('sector').textContent=`SECTOR ${String(index+1).padStart(2,'0')} / 06`;
+  $('level-title').textContent=state.level.name;
+  $('remaining').textContent=String(state.level.budget-state.moves).padStart(2,'0');
+  $('relay-count').textContent=`${relays.filter(c=>lit.has(c.id)).length} / ${relays.length}`;
+  $('par').textContent=`≤ ${state.level.par} 步`;
+  $('phase').textContent=!started?'等待接入':won?'通联成功':state.status==='lost'?'调度耗尽':'信号接入中';
+  $('phase').classList.toggle('online',started&&state.status!=='lost');
+  $('welcome').hidden=started;
+  $('result').hidden=!started||state.status==='playing';
+  const active=started&&state.status==='playing';
+  $('undo').disabled=!started||!state.history.length||won;
+  $('hint').disabled=!active;$('restart').disabled=!started;
+  // Reuse focused cells: keyboard interaction must not lose its target on each render.
+  const oldFocus=document.activeElement?.dataset.cell;
+  $('board').innerHTML=state.cells.map(c=>{
+    const fixed=c.fixed,source=c.id===state.level.source,target=c.id===state.level.target;
+    const dir=[1,2,4,8].map((b,i)=>c.mask&b?names[i]:'').filter(Boolean).join('、');
+    const label=`${Math.floor(c.id/5)+1} 行 ${c.id%5+1} 列，${source?'能源，固定':target?'星港，固定':c.relay?'中继站':'线路'}，开口${dir}，${lit.has(c.id)?'已通电':'未通电'}`;
+    return `<button class="cell${lit.has(c.id)?' lit':''}${fixed?' fixed':''}${source?' source':''}${target?' target':''}${hinted===c.id?' hinted':''}" data-cell="${c.id}" aria-label="${label}" ${!active?'disabled':''} aria-disabled="${fixed||!active}"><svg viewBox="0 0 100 100" aria-hidden="true"><path class="rail" d="${paths(c.mask)}"/><path class="signal" d="${paths(c.mask)}"/><circle class="dot" cx="50" cy="50" r="7"/></svg>${source?'<span class="badge">✦</span>':target?'<span class="badge">▣</span>':c.relay?'<span class="badge">◇</span>':''}</button>`;
+  }).join('');
+  if(oldFocus!==undefined&&active)$('board').querySelector(`[data-cell="${oldFocus}"]`)?.focus({preventScroll:true});
+  $('levels').innerHTML=Array.from({length:LEVEL_COUNT},(_,i)=>`<button class="level-button${index===i?' active':''}${record.best[i+1]?' done':''}" data-level="${i}" aria-label="第 ${i+1} 关${record.best[i+1]?`，已获 ${record.best[i+1].stars} 星`:''}" ${index===i?'aria-current="step"':''}>${String(i+1).padStart(2,'0')}</button>`).join('');
+  $('total-stars').textContent=`${Object.values(record.best).reduce((s,b)=>s+b.stars,0)} / 18 ✦`;
+  $('sound').textContent=`声音：${record.muted?'关':'开'}`;
+  const storageNote=persistent?'':' · 浏览器未允许保存，记录仅在本次打开时保留。';
+  $('message').textContent=(!started?'准备好后，开始你的第一段航程。':won?'星港已收到能源。下一段航程，等你接通。':state.status==='lost'?'次数用尽了。撤销一步重新规划，或重新开始本关。':hinted!==null?'金色边框的线路值得调整，点击它旋转。使用提示后本次最多一星。':state.level.tip)+storageNote;
+  if(started&&state.status!=='playing'){
+    $('result-label').textContent=won?'SIGNAL RECEIVED / 通联完成':'SIGNAL LOST / 请重新规划';
+    $('result-stars').textContent=won?'✦'.repeat(stars(state))+'☆'.repeat(3-stars(state)):'◎';
+    $('result-title').textContent=won?(index===5?'最后的星港，也亮起来了。':'远方，收到你的光了。'):'航线还差一点。';
+    $('result-copy').textContent=won?`${state.moves} 次调度 · ${state.hints?'使用过提示 · ':''}所有中继站已接通。`:'没有时间惩罚。换一个思路，再试一次。';
+    $('next').textContent=won?(index===5?'回到第一段航程 →':'前往下一段航程 →'):'撤销一步，继续规划 ↶';
+  }
+}
+function rotateCell(id){
+  if(!started)return;
+  const next=turn(state,id);if(next===state)return;
+  state=next;hinted=null;log('rotate');
+  if(state.status==='won'){
+    const count=stars(state),old=record.best[state.level.id];
+    if(!old||count>old.stars||(count===old.stars&&state.moves<old.moves))record.best[state.level.id]={moves:state.moves,stars:count};
+    log('win');playTone(true);
+  }else if(state.status==='lost'){log('loss');}else playTone();
+  render();
+  if(state.status!=='playing')$('next').focus({preventScroll:true});
+}
+function undoMove(){const next=undo(state);if(next===state)return;state=next;hinted=null;log('undo');render();}
+function showHint(){if(!started||state.status!=='playing')return;hinted=hint(state);if(hinted!==null){state={...state,hints:state.hints+1};log('hint');render();}}
+$('start').addEventListener('click',()=>selectLevel(index));
+$('levels').addEventListener('click',e=>{const b=e.target.closest('[data-level]');if(b)selectLevel(Number(b.dataset.level));});
+$('board').addEventListener('click',e=>{const b=e.target.closest('[data-cell]');if(b)rotateCell(Number(b.dataset.cell));});
+$('board').addEventListener('keydown',e=>{
+  const b=e.target.closest('[data-cell]');if(!b)return;
+  const delta={ArrowUp:-5,ArrowDown:5,ArrowLeft:-1,ArrowRight:1}[e.key];
+  if(delta===undefined)return;e.preventDefault();
+  const id=Number(b.dataset.cell),next=id+delta;
+  if(next<0||next>=25||(Math.abs(delta)===1&&Math.floor(id/5)!==Math.floor(next/5)))return;
+  $('board').querySelector(`[data-cell="${next}"]`).focus();
+});
+$('undo').addEventListener('click',undoMove);$('hint').addEventListener('click',showHint);
+$('restart').addEventListener('click',()=>selectLevel(index));
+$('result-retry').addEventListener('click',()=>selectLevel(index));
+$('next').addEventListener('click',()=>state.status==='lost'?undoMove():selectLevel((index+1)%LEVEL_COUNT));
+$('help').addEventListener('click',()=>$('help-dialog').showModal());
+$('feedback').addEventListener('click',()=>$('feedback-dialog').showModal());
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
+$('sound').addEventListener('click',()=>{record.muted=!record.muted;persist();playTone();render();});
+document.addEventListener('keydown',e=>{
+  if(e.target.closest('dialog,input,textarea,select')||document.querySelector('dialog[open]')||e.ctrlKey||e.metaKey||e.altKey||!started)return;
+  if(e.key.toLowerCase()==='u'){e.preventDefault();undoMove();}
+  if(e.key.toLowerCase()==='h'){e.preventDefault();showHint();}
+  if(e.key.toLowerCase()==='r'){e.preventDefault();selectLevel(index);}
+});
+$('share').addEventListener('click',async()=>{
+  const url=new URL(location.href);url.searchParams.set('level',String(index+1));
+  try{
+    if(navigator.share){await navigator.share({title:'星港调度 · Orbit Dispatch',text:`来接通第 ${index+1} 段航线。`,url:url.href});$('message').textContent='航程已交给系统分享。';}
+    else{await navigator.clipboard.writeText(url.href);$('message').textContent='本关链接已复制，可以发给朋友一起挑战。';}
+  }catch(e){if(e.name!=='AbortError')$('message').textContent=`可复制浏览器地址分享本关：${url.href}`;}
+});
+document.querySelectorAll('[data-feeling]').forEach(b=>b.addEventListener('click',()=>{log('feedback',{feedback:b.dataset.feeling});$('feedback-status').textContent='已保存在本机，可导出交给开发者。';}));
+$('export').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify({game:'orbit-dispatch',version:1,exportedAt:new Date().toISOString(),best:record.best,events:record.events},null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='orbit-dispatch-playtest.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+$('clear').addEventListener('click',()=>{
+  if(!confirm('清除本机所有星级、进度与试玩记录？此操作无法撤销。'))return;
+  record=emptyRecord();persist();$('feedback-status').textContent='本机进度与记录已清除。';render();
+});
+render();
+})();</script>
+</body>
+</html>

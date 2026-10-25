@@ -1,0 +1,23 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {Store} from '../server/store.js';
+import {inspectHtml,sandboxDocument} from '../server/sandbox.js';
+import {sandboxDocument as clientSandbox} from '../src/sandbox.js';
+import {encodeGame,decodeGame} from '../src/share.js';
+const html='<!doctype html><html><head><title>Game</title></head><body><h1>Game</h1><script>let score=0;function play(){score++;}</script>'+(' '.repeat(200))+'</body></html>';
+const game={title:'中文游戏',html,summary:'跳跃闯关',objective:'到达终点',controls:'空格跳跃',changes:['加入平台'],genre:'平台跳跃'};
+async function fixture(t){const dir=await fs.mkdtemp(path.join(os.tmpdir(),'forge-test-'));t.after(()=>fs.rm(dir,{recursive:true,force:true}));const store=new Store(dir);await store.init();return {store,dir};}
+
+test('immutable versions, branches and active pointer survive reload',async t=>{const {store,dir}=await fixture(t);const p=store.create({title:'原版',html});const original=p.versions[0],v2=store.commit(p,game),v3=store.commit(p,{...game,title:'分支版本'},{parent:original.id});assert.equal(v2.parent,original.id);assert.equal(v3.parent,original.id);assert.equal(original.html,html);p.activeVersion=original.id;await store.save();const reloaded=new Store(dir);await reloaded.init();assert.equal(reloaded.get(p.id).versions.length,3);assert.equal(reloaded.get(p.id).activeVersion,original.id);});
+test('result cannot replace store-owned version identity',async t=>{const {store}=await fixture(t);const p=store.create({title:'t'});const v=store.commit(p,{...game,id:'forged',number:99,origin:'fake',checks:{runtime:true}});assert.notEqual(v.id,'forged');assert.equal(v.number,1);assert.equal(v.origin,'codex');assert.equal(v.checks.runtime,null);});
+test('concurrent saves serialize complete snapshots and retain backup',async t=>{const {store,dir}=await fixture(t);for(let i=0;i<6;i++){store.create({title:'游戏'+i});store.save();}await store.save();const saved=JSON.parse(await fs.readFile(path.join(dir,'projects.json')));assert.equal(saved.projects.length,6);assert.equal(saved.schema,1);assert.equal(JSON.parse(await fs.readFile(path.join(dir,'projects.json.bak'))).schema,1);});
+test('corrupted project file is not silently overwritten',async t=>{const {dir}=await fixture(t);await fs.writeFile(path.join(dir,'projects.json'),'{broken');const store=new Store(dir);await assert.rejects(()=>store.init(),/无法读取/);assert.equal(await fs.readFile(path.join(dir,'projects.json'),'utf8'),'{broken');});
+test('example seeding is idempotent and does not replace user projects',async t=>{const {store,dir}=await fixture(t);const user=store.create({title:'我的项目'});await store.save();const next=new Store(dir);await next.init([{title:'示例',slug:'sample',html}]);await next.init([{title:'示例',slug:'sample',html}]);assert.equal(next.data.projects.length,2);assert.ok(next.get(user.id));});
+test('sharing roundtrips Chinese text and playable code without conversations',()=>{const encoded=encodeGame({...game,messages:[{content:'private conversation'}],token:'private'}),decoded=decodeGame(encoded);assert.equal(decoded.html,html);assert.equal(decoded.title,game.title);assert.equal(decoded.token,undefined);assert.equal(decoded.messages,undefined);});
+test('malformed, oversized and unsupported share payloads fail closed',()=>{for(const value of ['', '???','a'.repeat(60001)])assert.throws(()=>decodeGame(value));const forged=encodeGame({...game,html:42});assert.throws(()=>decodeGame(forged));});
+test('syntax checker catches a real JS parse error but permits a complete game',()=>{assert.deepEqual(inspectHtml(html),[]);assert.ok(inspectHtml(html.replace('let score=0','let = ;')).some(s=>s.includes('语法错误')));assert.ok(inspectHtml(html.replace('<script>','<script src="https://external.invalid/x.js">')).length);});
+test('sandbox boundary precedes even scripts placed before the supplied head',()=>{const malicious='<script>fetch("https://example.com")</script>'+html;const safe=sandboxDocument(malicious);assert.ok(safe.indexOf('Content-Security-Policy')<safe.indexOf('fetch('));assert.ok(safe.includes("connect-src 'none'"));assert.equal(safe,clientSandbox(malicious));});
+test('all shipped examples contain executable valid JS without external script dependencies',async()=>{const catalog=JSON.parse(await fs.readFile('public/catalog.json','utf8'));assert.equal(catalog.length,3);for(const item of catalog){const source=await fs.readFile('public/examples/'+item.file,'utf8');assert.deepEqual(inspectHtml(source),[],item.title);assert.equal(decodeGame(encodeGame({...game,html:source})).html,source);}});

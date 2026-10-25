@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "neon-frontier",
+    "file": "neon-frontier.html",
+    "title": "霓虹边界",
+    "genre": "动作生存",
+    "description": "穿梭霓虹星域，自动锁敌，收集能量并选择升级，坚持 75 秒等待撤离。",
+    "controls": "WASD / 方向键移动 · 触屏拖动 · Space 跃迁 · P 暂停"
+  },
+  {
+    "slug": "tidal-cafe",
+    "file": "tidal-cafe.html",
+    "title": "潮汐小馆",
+    "genre": "轻经营",
+    "description": "新增30金币的外卖窗口升级，购买后每次营业结束额外获得12金币。界面持续显示价格、购买状态和每日收益；外卖收益独立结算，不计入每日营业额目标。",
+    "controls": "点击咖啡机或按空格制作；点击顾客或按1–8交付；点击按钮升级咖啡机、座位或购买外卖窗口。P暂停，R重开；支持触屏点击。"
+  },
+  {
+    "slug": "orbit-dispatch",
+    "file": "orbit-dispatch.html",
+    "title": "星港调度",
+    "genre": "逻辑解谜",
+    "description": "旋转航线，点亮所有中继站，把能源送往远方的星港。",
+    "controls": "点击线路旋转 · 方向键选择 · Enter 旋转 · U 撤销 · H 提示"
+  }
+]

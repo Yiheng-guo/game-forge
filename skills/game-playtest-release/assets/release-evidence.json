@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "commit": null,
+  "checks": [],
+  "humanPlaytests": {
+    "count": 0,
+    "observations": []
+  },
+  "deployment": {
+    "url": null,
+    "httpStatus": null,
+    "renderedCheck": null
+  },
+  "untestedPlatforms": []
+}
