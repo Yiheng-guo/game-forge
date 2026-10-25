@@ -55,6 +55,7 @@ try{
   assert.equal(await mp.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await mp.screenshot({path:'test-results/workbench-mobile.png',fullPage:true});await mobile.close();
   await page.bringToFront();await page.locator('.project-select').filter({hasText:'潮汐小馆'}).first().click();await page.frameLocator('iframe').getByRole('button',{name:'开门营业'}).click();await page.frameLocator('iframe').locator('#brew').click();await page.waitForTimeout(3800);
+  if(await page.locator('.runtime-errors').count())console.log('Embedded game error:',await page.locator('.runtime-errors').innerText());
   assert.equal(await page.locator('.runtime-errors').count(),0,'a generated game must start after the preview viewport has a real size');
   const painted=await page.frameLocator('iframe').locator('canvas').evaluate(c=>{const ctx=c.getContext('2d'),colors=new Set();for(let y=0;y<c.height;y+=16)for(let x=0;x<c.width;x+=16){const d=ctx.getImageData(x,y,1,1).data;colors.add([...d].join(','));}return colors.size;});assert.ok(painted>20,'generated scene must render rather than leaving a blank canvas');
   await page.screenshot({path:'test-results/workbench-cafe.png',fullPage:true});

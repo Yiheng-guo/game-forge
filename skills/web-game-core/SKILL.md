@@ -17,3 +17,5 @@ Use DOM/SVG for modest board/card/turn-based games; select an engine for continu
 Acceptance: one complete loop works with mouse, keyboard and touch emulation; storage exceptions do not prevent play; direct public-subpath reload succeeds; automated rules tests cover all levels plus the final-action boundary.
 
 Primary references: [DOM events](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener), [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site).
+
+For Canvas games embedded in a preview, defer size-dependent setup until displayed dimensions are positive, observe container resize, and clamp all arc/ellipse radii to nonnegative values. A successful standalone load does not prove correct initialization in a newly mounted or previously hidden iframe.
